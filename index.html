@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chinese Character Practice</title>
+  <style>
+    #canvas {
+      background-color: white;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="400"></canvas>
+<button id="clear">Clear</button>
+<button id="save">Save</button>
+<p id="prediction"></p>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const clearButton = document.getElementById('clear');
+    const saveButton = document.getElementById('save');
+    const predictionParagraph = document.getElementById('prediction');
+    
+    let drawing = false;
+
+    canvas.addEventListener('mousedown', () => drawing = true);
+    canvas.addEventListener('mouseup', () => {
+      drawing = false;
+      ctx.beginPath(); // Reset path to prevent lines connecting when resuming drawing
+    });
+    canvas.addEventListener('mouseout', () => drawing = false);
+
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(event) {
+      if (!drawing) return;
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = 'black';
+
+      ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+    }
+
+    clearButton.addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    saveButton.addEventListener('click', () => {
+      canvas.toBlob((blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'handwriting.png');
+
+        // 後端位址
+        fetch('http://127.0.0.1:5000/predict', {   
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          predictionParagraph.textContent = 'Predicted Character: ' + data['Predicted Character'];
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          predictionParagraph.textContent = 'Error: ' + error;
+        });
+      }, 'image/png');
+    });
+  });
+</script>
+</body>
+</html>
