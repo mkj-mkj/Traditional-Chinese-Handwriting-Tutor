@@ -22,23 +22,24 @@ if not os.path.exists(labels_path):
 model = load_model(model_path)
 label_classes = np.load(labels_path, allow_pickle=True)
 
+# 定義預處理函數
 def preprocess_image(image):
-    img = Image.open(io.BytesIO(image)).convert('RGB').resize((200, 200))
+    img = Image.open(io.BytesIO(image)).convert('RGB').resize((200, 200))  
     img = np.array(img)
-
-    img = img.reshape(1, 200, 200, 3) / 255.0  # 預處理圖片
-
-    # 打印預處理後的圖像數據
-    print('Preprocessed image shape:', img.shape)
-    print('Preprocessed image data:', img)
-    
-    return img
+    blank_image = Image.new("RGBA", image.size, (255, 255, 255, 255))
+    black_mask = np.all(img[:, :, :3] < 50, axis=-1)
+    blank_np = np.array(blank_image)
+    blank_np[black_mask] = img[black_mask]
+    cleaned_red_image = Image.fromarray(blank_np)
+    cleaned_red_image = cleaned_red_image.reshape(1, 200, 200, 3) / 255.0  # 預處理圖片
+    return cleaned_red_image
 
 app = Flask(__name__)
+CORS(app)
 CORS(app, resources={r"/predict": {"origins": "http://localhost:8000"}})  # 允許從http://localhost:8000請求
                                                                           #cd C:\Users\user\Desktop\專題\畢業專題\分類模型
                                                                           #python -m http.server 8000
-#CORS(app)  # 允許所有來源                                                                
+                                                                
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -47,12 +48,6 @@ def predict():
     
     try:
         image = request.files['image'].read()
-        img = preprocess_image(image)
-
-        # 在這裡檢查接收到的圖像數據
-        with open('received_image.png', 'wb') as f:
-            f.write(image)
-        
         img = preprocess_image(image)
         
         # 進行預測
