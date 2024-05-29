@@ -42,12 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
         drawing = false;
     });
 
-    // Clear button
+    // Clear button 
     document.getElementById('clear').addEventListener('click', function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawGrid(); // Redraw the grid after clearing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white'; // Set the fill color to white
+    ctx.fillRect(0, 0, canvas.width, canvas.height); // Fill the canvas with white
+    drawGrid(); // Redraw the grid after clearing
     });
-
+    
     // Save button
     document.getElementById('save').addEventListener('click', function() {
         const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
