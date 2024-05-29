@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Handwriting Recognition</title>
+    <link rel="stylesheet" href="./index.css"/>
+  </head>
+  <body>
+    <div style="margin-bottom: 10px">
+      <button id="delete" type="button">Delete</button>
+      <button id="finish" type="button">Finish</button>
+      <input type="text" id="recognized" style="width: 340px; font-size: 18px"></input>
+    </div>
+    <div id="app"></div>
+    <script src="../dist/react-handwriting-recognition.js"></script>
+    <script>
+      (function() {
+        var inputControls;
+        var input = document.getElementById('recognized');
+        var deleteButton = document.getElementById('delete');
+        var finishButton = document.getElementById('finish');
+
+        function clearHandwritingInput(e) {
+          e.preventDefault();
+          inputControls.clear();
+        }
+
+        HandwritingRecognition.input({
+          node: document.getElementById('app'),
+          applicationKey: 'b9e2b349-949f-4808-8005-df43efef8de5',
+          hmacKey: '6446fc31-9114-4667-85f0-5e977224117f',
+          protocol: 'WebSocket',
+          onChange: function(data, label) {
+            input.value = label;
+          },
+          onInit: function(controls) {
+            inputControls = controls;
+            deleteButton.addEventListener('click', clearHandwritingInput);
+            finishButton.addEventListener('click', function() {
+              var canvas = document.querySelector('#app canvas'); // Adjust the selector as needed
+              if (canvas) {
+                var image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+                var link = document.createElement('a');
+                link.download = 'handwriting.png';
+                link.href = image;
+                link.click();
+              }
+            });
+          },
+          onShutdown: function(controls) {
+            deleteButton.removeEventListener('click', clearHandwritingInput);
+          }
+        });
+
+      })();
+    </script>
+  </body>
+</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chinese Character Practice</title>
+  <style>
+    #canvas {
+      background-color: white;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="400"></canvas>
+<button id="clear">Clear</button>
+<button id="save">Save</button>
+<script src="app.js"></script>
+</body>
+</html>
