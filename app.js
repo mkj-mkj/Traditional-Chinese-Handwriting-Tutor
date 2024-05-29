@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ctx.fillStyle = 'white'; // Set the fill color to white
     ctx.fillRect(0, 0, canvas.width, canvas.height); // Fill the canvas with white
     drawGrid(); // Redraw the grid after clearing
+    predictionParagraph.textContent = ""
     });
     
     // Save button
