@@ -8,8 +8,8 @@ import json
 from flask_cors import CORS
 
 # 使用正確的檔案路徑
-model_path = r'C:\Users\user\Desktop\專題\畢業專題\分類模型\cnn_hanzi_classifier.h5'  # 替換路徑
-labels_path = r'C:\Users\user\Desktop\專題\畢業專題\分類模型\label_classes.npy'  # 替換路徑
+model_path = r'.\cnn_hanzi_classifier.h5'  # 替換路徑
+labels_path = r'.\label_classes.npy'  # 替換路徑
 
 # 確認檔案是否存在
 if not os.path.exists(model_path):
@@ -25,13 +25,25 @@ label_classes = np.load(labels_path, allow_pickle=True)
 # 定義預處理函數
 def preprocess_image(image):
     img = Image.open(io.BytesIO(image)).convert('RGB').resize((200, 200))  
-    img = np.array(img)
-    blank_image = Image.new("RGBA", image.size, (255, 255, 255, 255))
-    black_mask = np.all(img[:, :, :3] < 50, axis=-1)
+    img_np = np.array(img)
+
+    # 建立一個白色的圖像，形狀為 (200, 200, 4)
+    blank_image = Image.new("RGBA", img.size, (255, 255, 255, 255))
     blank_np = np.array(blank_image)
-    blank_np[black_mask] = img[black_mask]
+
+    # 建立一個黑色遮罩
+    black_mask = np.all(img_np[:, :, :3] < 50, axis=-1)
+
+    # 將黑色部分設置為原始圖像的像素
+    blank_np[black_mask, :3] = img_np[black_mask]
+
+    # 轉換回圖像
     cleaned_red_image = Image.fromarray(blank_np)
-    cleaned_red_image = cleaned_red_image.reshape(1, 200, 200, 3) / 255.0  # 預處理圖片
+    # cleaned_red_image.save('./test.png')
+
+    # 將預處理結果轉換為 (1, 200, 200, 3) 並歸一化
+    cleaned_red_image = blank_np[:, :, :3].reshape(1, 200, 200, 3) / 255.0  # 預處理圖片
+    
     return cleaned_red_image
 
 app = Flask(__name__)
@@ -59,6 +71,7 @@ def predict():
         response.headers['Content-Type'] = 'application/json'
         return response
     except Exception as e:
+        app.logger.error('An error occurred: %s', str(e))
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
