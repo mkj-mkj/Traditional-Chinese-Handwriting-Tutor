@@ -1,94 +1,168 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const predictionParagraph = document.getElementById('prediction');
-    ctx.lineWidth = 2; // Setting the line width for the grid and drawing
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
 
-    // Function to draw grid
-    function drawGrid() {
-        ctx.strokeStyle = 'rgba(255, 0, 0, 0.4)'; // Red color with lower opacity
-        ctx.beginPath();
-        // Draw horizontal line
-        ctx.moveTo(0, canvas.height / 2);
-        ctx.lineTo(canvas.width, canvas.height / 2);
-        // Draw vertical line
-        ctx.moveTo(canvas.width / 2, 0);
-        ctx.lineTo(canvas.width / 2, canvas.height);
+const lineWidth = document.getElementById("line-width");
+const color = document.getElementById("color");
+const destroyBtn = document.getElementById("destroy-btn")
+const eraserBtn = document.getElementById("eraser-btn")
+const fileInput = document.getElementById("file")
+const saveBtn = document.getElementById("save-btn")
+
+const CANVAS_WIDTH = 400;
+const CANVAS_HEIGHT = 400;
+
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
+ctx.lineWidth = lineWidth.value;
+ctx.lineCap = "round";
+
+let isPainting = false;
+let isFilling = false;
+let isErasing = false;
+
+
+function onMove(event) {
+    if(isPainting){
+        ctx.lineTo(event.offsetX, event.offsetY);
         ctx.stroke();
+        return;
     }
+    ctx.beginPath();
+    ctx.moveTo(event.offsetX, event.offsetY);
+}
 
-    // Initialize canvas background and grid
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    drawGrid();
+function startPainting() {
+    isPainting = true;
+}
 
-    // Setup drawing
-    let drawing = false;
-    canvas.addEventListener('mousedown', function(e) {
-        drawing = true;
-        ctx.beginPath();
-        ctx.strokeStyle = 'black'; // Set the stroke color to black for drawing
-        ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-    });
+function cancelPainting() {
+    isPainting = false;
+}
 
-    canvas.addEventListener('mousemove', function(e) {
-        if (drawing) {
-            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-            ctx.stroke();
-        }
-    });
+function onLineWidthChange(event) {
+    ctx.lineWidth = event.target.value;
+}
 
-    canvas.addEventListener('mouseup', function() {
-        drawing = false;
-    });
+function onColorChange(event) {
+    ctx.strokeStyle = event.target.value;
+    ctx.fillStyle = event.target.value;
+}
 
-    // Clear button 
-    document.getElementById('clear').addEventListener('click', function() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'white'; // Set the fill color to white
-    ctx.fillRect(0, 0, canvas.width, canvas.height); // Fill the canvas with white
-    drawGrid(); // Redraw the grid after clearing
+function onCanvasClick() {
+    if(isFilling){
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+}
+
+function onDestroyClick() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     predictionParagraph.textContent = ""
-    });
-    
-    // Save button
-    document.getElementById('save').addEventListener('click', function() {
-        const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-        const link = document.createElement('a');
-        link.download = 'canvas.png';
-        link.href = image;
-        link.click();
-    });
+    initCanvas();  // 清除后重新初始化画布
+}
 
-    // Upload button
-    document.getElementById('upload').addEventListener('click', () => {
-        canvas.toBlob((blob) => {
-          /*
-          // 創建URL以便在頁面上顯示圖像
-          const imgUrl = URL.createObjectURL(blob);
-          const img = document.createElement('img');
-          img.src = imgUrl;
-          document.body.appendChild(img); // 在頁面上顯示圖像以確認
-          imageContainer.innerHTML = ''; // 清空容器
-          imageContainer.appendChild(img); // 添加新的圖像
-          */
-  
-          const formData = new FormData();
-          formData.append('image', blob, 'handwriting.png');
-          // 後端位址
-          fetch('http://127.0.0.1:5000/predict', {   
+function onEraserClick() {
+    if (isErasing) {
+        isErasing = false;
+        ctx.strokeStyle = color.value; // 切换回选择的颜色
+        eraserBtn.innerText = "Erase"; // 按钮文字变回橡皮擦
+    } else {
+        isErasing = true;
+        ctx.strokeStyle = "white"; // 设置为橡皮擦模式
+        eraserBtn.innerText = "Pen"; // 按钮文字变为画笔
+    }
+}
+
+function onFileChange(event) {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.onload = function() {
+        ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        fileInput.value = null;
+    }
+}
+
+function onDoubleClick(event) {
+    const text = textInput.value;
+    if(text !==""){
+        ctx.save();
+        ctx.lineWidth = 1;
+        ctx.font = "68px sans-serif";
+        ctx.fillText(text, event.offsetX, event.offsetY)
+        ctx.restore();
+    }
+}
+
+function onSaveClick() {
+    const url = canvas.toDataURL()
+    const a = document.createElement("a")
+    a.href = url;
+    a.download = "myDrawing.png";
+    a.click();
+}
+
+function drawGrid() {
+    ctx.save(); // 保存当前画布状态
+    ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)'; // 红色透明线
+    ctx.lineWidth = 1; // 设置线宽
+    ctx.beginPath();
+    // 绘制纵向线
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
+    // 绘制横向线
+    ctx.moveTo(0, canvas.height / 2);
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
+    ctx.restore(); // 恢复到之前的状态
+}
+
+function initCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white'; // 填充背景色
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawGrid(); // 在画布上绘制辅助线
+}
+
+function uploadImage() {
+    canvas.toBlob((blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'handwriting.png');
+
+        fetch('http://127.0.0.1:5000/predict', {
             method: 'POST',
             body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data);
-            predictionParagraph.textContent = 'Predicted Character: ' + data['Predicted Character'];
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-            predictionParagraph.textContent = 'Error: ' + error;
-          });
-        }, 'image/png');
-      });
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                predictionParagraph.textContent = 'Predicted Character: ' + data['Predicted Character'];
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                predictionParagraph.textContent = 'Error: ' + error;
+            });
+    }, 'image/png');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initCanvas();
 });
+document.getElementById('upload').addEventListener('click', uploadImage);
+
+
+canvas.addEventListener("mousemove", onMove);
+canvas.addEventListener("mousedown", startPainting);
+canvas.addEventListener("mouseup", cancelPainting);
+canvas.addEventListener("mouseleave", cancelPainting);
+canvas.addEventListener("click", onCanvasClick);
+canvas.addEventListener("dblclick", onDoubleClick);
+
+
+lineWidth.addEventListener("change", onLineWidthChange);
+color.addEventListener("change", onColorChange);
+destroyBtn.addEventListener("click", onDestroyClick);
+eraserBtn.addEventListener("click", onEraserClick);
+fileInput.addEventListener("change", onFileChange);
+saveBtn.addEventListener("click", onSaveClick);
