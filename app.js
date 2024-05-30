@@ -7,6 +7,7 @@ const destroyBtn = document.getElementById("destroy-btn")
 const eraserBtn = document.getElementById("eraser-btn")
 const fileInput = document.getElementById("file")
 const saveBtn = document.getElementById("save-btn")
+const predictionParagraph = document.getElementById('prediction');
 
 const CANVAS_WIDTH = 400;
 const CANVAS_HEIGHT = 400;
