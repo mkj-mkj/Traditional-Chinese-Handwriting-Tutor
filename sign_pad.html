@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign_Pad</title>
+  <link rel="stylesheet" href="sign_pad.css">
+  <style>
+    canvas {
+      background-color: white;
+      border-radius: 20px; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">SignaTure</div>
+    </nav>
+    <div class="container">
+        <div class="canvas-container">
+          <canvas id="canvas"></canvas>
+          <div class="btns">
+            <input id="line-width" type="range" min="1" max="10" value="5" step="0.1">
+            <input id="color" type="color">
+            <button id="destroy-btn">Clear</button>
+            <button id="eraser-btn">Erase</button>
+            <label for="file">Add Photo <input type="file" accept="image/*" id="file"></label>
+            <button id="save-btn">Save</button>
+            <button id="upload">Upload</button>
+            <p id="prediction"></p>
+          </div>
+        </div>
+        <div class="func-btns">
+            <button id="backButton" onclick="goBack()">Back</button>
+        </div>
+    </div>
+    <script src="pad.js"></script>
+</body>
+</html>
