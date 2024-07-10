@@ -1,0 +1,10 @@
+打開xampp 啟用Apache MySQL
+打開MySQL admin 將下載的handwriting資料夾內的資料庫匯入
+
+設置後端
+在 XAMPP 安裝目錄下找到 htdocs 文件夾（通常在 C:\xampp\htdocs）。
+在 htdocs 文件夾內放入handwriting資料夾
+在cmd輸入以下兩個指令
+  cd C:\xampp\htdocs\handwriting
+  python classifier_invocation.py
+接著訪問http://localhost/handwriting/index.html
