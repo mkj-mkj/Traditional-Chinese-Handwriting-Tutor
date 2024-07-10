@@ -1,5 +1,6 @@
 打開xampp 啟用Apache MySQL
 打開MySQL admin 將下載的handwriting資料夾內的資料庫匯入
+(另外要將cnn_hanzi_classifier.h5和label_classes.npy放入資料夾內)
 
 設置後端
 在 XAMPP 安裝目錄下找到 htdocs 文件夾（通常在 C:\xampp\htdocs）。
