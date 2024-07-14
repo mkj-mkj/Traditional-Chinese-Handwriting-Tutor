@@ -10,9 +10,12 @@ from sklearn.metrics import accuracy_score
 import joblib
 
 # 影像前處理函數
-def preprocess_image(image_path):
-    # 讀取影像
-    image = cv2.imread(image_path)
+def preprocess_image(image_bytes):
+    # # 讀取影像
+    # image = cv2.imread(image_path)
+    image_array = np.frombuffer(image_bytes, np.uint8)
+    # 解碼影像
+    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
     # 灰階轉換
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 二值化
@@ -62,9 +65,9 @@ def predict_pnn(pnn, test_image_path):
     return prediction
 
 # 簽名驗證 輸入為簽名檔路徑(單一檔案)，回傳預測類別
-def signature_verification(img_path):
+def signature_verification(image_bytes):
     pnn = joblib.load('signature_verification.pkl')
-    prediction = predict_pnn(pnn, img_path)
+    prediction = predict_pnn(pnn, image_bytes)
     print(f"Predicted label: {prediction[0]}")
     return prediction[0]
 
