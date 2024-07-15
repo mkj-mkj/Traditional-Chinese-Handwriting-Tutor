@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    background-color: transparent;
+    border-radius: 10px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    overflow: hidden;
+    width: 80%;
+    max-width: 1000px;
+    display: flex;
+    position: relative;
+}
+.text-section {
+    padding: 4%;
+    flex: 1;
+    border-radius: 10px 0 0 10px;
+    background-color: #f4f4f4;
+}
+.text-section h1 {
+    font-size: 3.6vw;
+    margin-bottom: 2%;
+}
+.text-section p {
+    font-size: 1.8vw;
+    color: #666;
+    margin-bottom: 4%;
+}
+.button-group {
+    display: flex;
+    gap: 2%;
+}
+.button-group button {
+    padding: 1.5% 2.5%;
+    font-size: 1vw;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.button-group .try-it {
+    background-color: #007bff;
+    color: white;
+}
+.button-group .try-it:hover {
+    background-color: #0056b3;
+}
+.button-group .see-how {
+    background-color: #f4f4f4;
+    border: 1px solid black;
+    color: black;
+}
+.button-group .see-how:hover {
+    background-color: #c0c0c0;
+}
+.image-section {
+    /* flex: 1;
+    background-size: cover; */
+    top: 19.2%;
+    left: 70.6%;
+    width: 64.2vw;
+    height: 56.3vh;
+    border-radius: 58.160000000000004px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.16);
+    background-image: url('./images/homepage_img.png');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.auth-buttons {
+    position: absolute;
+    top: 2%;
+    right: 4%;
+    gap: 1rem;
+    display: flex;
+    white-space: nowrap; 
+}
+.auth-buttons button {
+    border: 1px solid #007bff;
+    padding: 1.5% 3%;
+    font-size: 1vw;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.auth-buttons .login {
+    background-color:#f4f4f4;
+    border:#f4f4f4;
+    color: black;
+}
+.auth-buttons .login:hover {
+    background-color: #f0f0f0;
+}
+.auth-buttons .sign-up {
+    background-color: #007bff;
+    color: white;
+}
+.auth-buttons .sign-up:hover {
+    background-color: #0056b3;
+}
+.logo {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    height: 2vw;
+    margin-right: 1%;
+}
+.logo span {
+    font-size: 1.5vw;
+    font-weight: bold;
+    color: #007bff;
+}
+
