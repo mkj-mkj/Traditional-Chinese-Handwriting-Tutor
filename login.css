@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    width: 90%;
+    max-width: 1200px;
+}
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+.logo span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    max-width: 1200px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    gap: 7vw;
+    margin-top: 8vh;
+}
+.image-section {
+    flex: 1;
+    background: url('./images/login_img.png') no-repeat center center;
+    background-size: cover;
+    border-radius: 10px;
+    height: 60vh;
+}
+.form-section {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.form-section h2 {
+    margin-bottom: 1rem;
+    color: #030303;
+    font-size: 2.4vw;
+    font-family: "Poppins";
+    font-weight: 600;
+    line-height: 6.2vh;
+}
+.form-section p {
+    /* margin-bottom: 2rem; */
+    color: #030303;
+    font-size: 0.8vw;
+    font-family: "Inter";
+    line-height: 1.8vh;
+}
+.form-group {
+    margin-top: 2vh;
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #262626;
+    font-size: 0.8vw;
+    font-family: "Poppins";
+    font-weight: 6.0vw;
+    line-height: 1vh;
+}
+.form-group input {
+    width: 100%;
+    padding: 0px 8px;
+    border: 1px solid #424242;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: #94a3b8;
+    font-size: 1.2vw;
+    font-family: "Poppins";
+    font-weight: 6vw;
+    line-height: 4.5vh;
+    outline: none;
+}
+.form-group button {
+    width: 100%;
+    height: 4.5vh !important;
+    padding: 0px 8px;
+    border: 0;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background-color: #3164f4;
+    color: #ffffff;
+    font-size: 16vw;
+    font-family: "Poppins";
+    font-weight: 600;
+    line-height: 2.4vh;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+.form-group button:hover {
+    background-color: #0056b3;
+}
+.form-footer {
+    text-align: center;
+    margin-top: 1rem;
+    color: #262626;
+    font-size: 0.8vw;
+    font-family: "Poppins";
+}
+.form-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    color: #3164f4;
+    font-size: 0.8vw;
+    font-family: "Poppins";
+    text-align: center;
+}
+.form-footer a:hover {
+    text-decoration: underline;
+}
