@@ -12,7 +12,7 @@ body {
     align-items: center;
     margin: 2rem 0;
     width: 90%;
-    max-width: 1200px;
+    /* max-width: 1200px; */
 }
 .logo img {
     height: 40px;
@@ -27,8 +27,8 @@ body {
 .container {
     display: flex;
     justify-content: space-between;
-    width: 95%;
-    max-width: 1200px;
+    width: 100vw;
+    /* max-width: 1200px; */
     background-color: #f4f4f4;
     border-radius: 10px;
     margin-bottom: 2rem;
@@ -36,13 +36,17 @@ body {
     margin-top: 8vh;
 }
 .image-section {
+    margin-left: 5vw;
+    width: 30%;
     flex: 1;
     background: url('./images/login_img.png') no-repeat center center;
     background-size: cover;
     border-radius: 10px;
-    height: 60vh;
+    height: 70vh;
 }
 .form-section {
+    margin-right: 5vw;
+    width: 20vw;
     flex: 1;
     padding: 2rem;
     display: flex;
