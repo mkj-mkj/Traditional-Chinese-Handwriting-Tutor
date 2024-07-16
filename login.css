@@ -15,10 +15,12 @@ body {
     /* max-width: 1200px; */
 }
 .logo img {
+    margin-top: 3vh;
     height: 40px;
     margin-right: 10px;
 }
 .logo span {
+    margin-top: 3vh;
     font-size: 1.5rem;
     font-weight: bold;
     color: #030303;
@@ -32,21 +34,21 @@ body {
     background-color: #f4f4f4;
     border-radius: 10px;
     margin-bottom: 2rem;
-    gap: 7vw;
+    gap: 18vw;
     margin-top: 8vh;
 }
 .image-section {
-    margin-left: 5vw;
-    width: 30%;
+    margin-left: 10vw;
+    width: 20%;
     flex: 1;
     background: url('./images/login_img.png') no-repeat center center;
     background-size: cover;
     border-radius: 10px;
-    height: 70vh;
+    height: 60vh;
 }
 .form-section {
-    margin-right: 5vw;
-    width: 20vw;
+    margin-right: 10vw;
+    width: 15vw;
     flex: 1;
     padding: 2rem;
     display: flex;
@@ -72,14 +74,14 @@ body {
     line-height: 1.8vh;
 }
 .form-group {
-    margin-top: 2vh;
+    margin-top: 1.5vh;
     margin-bottom: 1rem;
 }
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     color: #262626;
-    font-size: 0.8vw;
+    font-size: 1vw;
     font-family: "Poppins";
     font-weight: 6.0vw;
     line-height: 1vh;
@@ -109,7 +111,7 @@ body {
     color: #ffffff;
     font-size: 16vw;
     font-family: "Poppins";
-    font-weight: 600;
+    font-weight: 6vw;
     line-height: 2.4vh;
     outline: none;
     cursor: pointer;
@@ -123,7 +125,7 @@ body {
     text-align: center;
     margin-top: 1rem;
     color: #262626;
-    font-size: 0.8vw;
+    font-size: 1vw;
     font-family: "Poppins";
 }
 .form-footer a {
@@ -131,7 +133,7 @@ body {
     text-decoration: none;
     font-weight: bold;
     color: #3164f4;
-    font-size: 0.8vw;
+    font-size: 1vw;
     font-family: "Poppins";
     text-align: center;
 }
