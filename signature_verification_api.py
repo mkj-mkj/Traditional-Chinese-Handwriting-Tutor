@@ -22,8 +22,8 @@ class JsonEncoder(json.JSONEncoder):
             return super(JsonEncoder, self).default(obj)
 
 # 使用正確的檔案路徑
-#model_path = r'.\signature_verification.pkl' # 替換路徑
-model_path = r'C:\xampp\htdocs\signature_verification\signature_verification.pkl'
+model_path = r'.\signature_verification.pkl' # 替換路徑
+#model_path = r'C:\xampp\htdocs\signature_verification\signature_verification.pkl'
 
 # 確認檔案是否存在
 if not os.path.exists(model_path):
