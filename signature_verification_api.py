@@ -22,7 +22,8 @@ class JsonEncoder(json.JSONEncoder):
             return super(JsonEncoder, self).default(obj)
 
 # 使用正確的檔案路徑
-model_path = r'.\signature_verification.pkl' # 替換路徑
+#model_path = r'.\signature_verification.pkl' # 替換路徑
+model_path = r'C:\xampp\htdocs\signature_verification\signature_verification.pkl'
 
 # 確認檔案是否存在
 if not os.path.exists(model_path):
@@ -43,10 +44,16 @@ def predict():
         image = request.files['image'].read()
         # 進行預測
         prediction = signature_verification(image)
+        predicted_class = int(prediction)
+
+        if predicted_class == 4:
+            verification_result = '符合'
+        else:
+            verification_result = '不符合'
         # print(prediction)
         # print(type(prediction))
         # 使用 json.dumps 並設置 ensure_ascii=False 回傳中文
-        response = make_response(json.dumps({'Predicted Character': prediction}, ensure_ascii=False, cls=JsonEncoder))
+        response = make_response(json.dumps({'Verification Result': verification_result}, ensure_ascii=False, cls=JsonEncoder))
         response.headers['Content-Type'] = 'application/json'
         return response
     except Exception as e:
