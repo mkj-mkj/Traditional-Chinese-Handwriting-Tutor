@@ -9,3 +9,5 @@
   cd C:\xampp\htdocs\handwriting
   python classifier_invocation.py
 接著訪問http://localhost/handwriting/index.html
+
+http://localhost/signature_verification/sign_pad.html
