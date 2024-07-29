@@ -2,12 +2,29 @@
 打開MySQL admin 將下載的handwriting資料夾內的資料庫匯入
 (另外要將cnn_hanzi_classifier.h5和label_classes.npy放入資料夾內)
 
-設置後端
-在 XAMPP 安裝目錄下找到 htdocs 文件夾（通常在 C:\xampp\htdocs）。
-在 htdocs 文件夾內放入handwriting資料夾
-在cmd輸入以下兩個指令
-  cd C:\xampp\htdocs\handwriting
-  python classifier_invocation.py
-接著訪問http://localhost/handwriting/index.html
+#設置後端
+    在 XAMPP 安裝目錄下找到 htdocs 文件夾（通常在 C:\xampp\htdocs）。
+    在 htdocs 文件夾內放入handwriting資料夾
+    在cmd輸入以下兩個指令
+      cd C:\xampp\htdocs\handwriting
+      python classifier_invocation.py
+    接著訪問http://localhost/handwriting/index.html
+    http://localhost/signature_verification/sign_pad.html
 
-http://localhost/signature_verification/sign_pad.html
+
+#login等功能測試
+    確保目錄正確
+    your_project_folder/
+    │
+    ├── app.py
+    ├── templates/
+    │   ├── home.html
+    │   ├── login.html
+    │   ├── sign_up.html
+    │   └── sign_pad.html
+    └── static/
+        ├── css/
+        │   └── login.css
+        └── images/
+            └── login_img.png
+    開啟http://127.0.0.1:5000/login
