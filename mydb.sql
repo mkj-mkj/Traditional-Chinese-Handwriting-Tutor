@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-07-17 13:12:23
+-- 產生時間： 2024-07-29 14:16:36
 -- 伺服器版本： 10.4.28-MariaDB
 -- PHP 版本： 8.2.4
 
@@ -189,15 +189,15 @@ CREATE TABLE `user_credential` (
 --
 
 INSERT INTO `user_credential` (`hash_id`, `hash_user_id`, `hash_user_pwd`, `created_at`, `update_at`) VALUES
-(0, 0, 'f1f6a33b469846f6b6d91df1822d65a5eb6d5f93f6aecae4be3696d343a59bd0\r\n', '2024-07-17 18:56:51', NULL),
-(1, 1, '38f0b2fdd8aee7531ab418b118423f368ab760429123b944ce6bfb8304c2e726\r\n', '2024-07-17 18:56:51', NULL),
-(2, 2, 'd51027a690a8bc0420a8875afb7bbcf4954cdd7700b3b67c17cc0832951f0467\r\n', '2024-07-17 18:56:51', NULL),
-(3, 3, '1f3d3a67fa887e1e39ca95f65cb932400f61407fcc78ee81bb0074cba0be63a4\r\n', '2024-07-17 18:56:51', NULL),
-(4, 4, '628acd7a67ad1a3600ac8dcd133cab39b8a616fe6d467833c1f56752a58da8bb\r\n', '2024-07-17 18:56:51', NULL),
-(5, 5, 'd7e6d3ae7f39f5089aaf61c7d0ff05e6c625815da88b3628d6a3eeff4f2d0217\r\n', '2024-07-17 18:56:51', NULL),
-(6, 6, '6dbec15151b49781d28083703c6291b83d1dc50497be376eeb29a71cc8ea61b0\r\n', '2024-07-17 18:56:51', NULL),
-(7, 7, '1c7eb08c4282b95d3ca4feb9570905dfd5368242586c5886f80b5a953a5c5a96\r\n', '2024-07-17 18:56:51', NULL),
-(8, 8, '9ad7e01c0554ed2c512ba57c3b35f9595b8baae198f779882bc77a113b66e4a3\r\n', '2024-07-17 18:56:51', NULL);
+(0, 0, 'f1f6a33b469846f6b6d91df1822d65a5eb6d5f93f6aecad2c76b07dd374cee0f\r\n\r\n', '2024-07-17 18:56:51', NULL),
+(1, 1, '38f0b2fdd8aee7531ab418b118423f368ab760429123b99886cc2147aadbb467\r\n', '2024-07-17 18:56:51', NULL),
+(2, 2, 'd51027a690a8bc0420a8875afb7bbcf4954cdd7700b3b60fac2c1dc5d52731d9\r\n', '2024-07-17 18:56:51', NULL),
+(3, 3, '1f3d3a67fa887e1e39ca95f65cb932400f61407fcc78eebec57280bbc77f195e\r\n', '2024-07-17 18:56:51', NULL),
+(4, 4, '628acd7a67ad1a3600ac8dcd133cab39b8a616fe6d467825d65b7addf024ffca\r\n', '2024-07-17 18:56:51', NULL),
+(5, 5, 'd7e6d3ae7f39f5089aaf61c7d0ff05e6c625815da88b36e5ba903f6d916fed45\r\n', '2024-07-17 18:56:51', NULL),
+(6, 6, '6dbec15151b49781d28083703c6291b83d1dc50497be379fcaf44184c084b554', '2024-07-17 18:56:51', NULL),
+(7, 7, '1c7eb08c4282b95d3ca4feb9570905dfd5368242586c58739dbbeacd0affb86c', '2024-07-17 18:56:51', NULL),
+(8, 8, '9ad7e01c0554ed2c512ba57c3b35f9595b8baae198f7794f8be199a286b2b974\r\n', '2024-07-17 18:56:51', NULL);
 
 --
 -- 已傾印資料表的索引
