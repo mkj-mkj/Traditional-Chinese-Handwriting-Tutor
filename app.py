@@ -1,16 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import os
 import hashlib
 from sqlalchemy.orm import joinedload
-
-app = Flask(__name__)
+# 從signature_verification_api導入藍圖
+from signature_verification_api import signature_verification_bp
+app = Flask(__name__, static_folder='static', static_url_path='')
 
 # 配置数据库 URI
 app.secret_key = 'your_secret_key'  # 閃存功能密要
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/mydb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# 註冊藍圖
+app.register_blueprint(signature_verification_bp, url_prefix='/signature_verification')
 
 db = SQLAlchemy(app)
 
@@ -61,6 +64,7 @@ def login():
         
 
         if user and user[1].hash_user_pwd.strip() == hash_password(password, user[0].user_salt):
+            session['user_id'] = user[0].user_id  # user_id 存到 session
             return redirect(url_for('dashboard'))
         else:
             flash('Ivalid UserID or Password', 'error')
@@ -96,6 +100,7 @@ def sign_pad():
 # 儀表板頁面路由
 @app.route('/dashboard')
 def dashboard():
+    user_id = session.get('user_id') #使用session訊息
     return render_template('dashboard.html')
 
 if __name__ == '__main__':

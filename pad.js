@@ -117,7 +117,7 @@ function initCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'white'; // 填充背景色
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    drawGrid(); // 在畫布上繪製輔助線
+    //drawGrid(); // 在畫布上繪製輔助線
 }
 
 function uploadImage() {
@@ -125,7 +125,7 @@ function uploadImage() {
         const formData = new FormData();
         formData.append('image', blob, 'handwriting.png');
 
-        fetch('http://127.0.0.1:5000/predict', {
+        fetch('http://127.0.0.1:5000/signature_verification/predict', {
             method: 'POST',
             body: formData
         })

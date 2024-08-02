@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign_Pad</title>
-  <link rel="stylesheet" href="sign_pad.css">
+  <!--靜態文件引用-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sign_pad.css') }}">
+  
   <style>
     canvas {
       background-color: white;
@@ -35,6 +37,7 @@
             <button id="backButton" onclick="goBack()">Back</button>
         </div>
     </div>
-    <script src="pad.js"></script>
+    <script src="{{ url_for('static', filename='js/pad.js') }}"></script>
+
 </body>
 </html>
