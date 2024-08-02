@@ -24,7 +24,8 @@
     │   └── sign_pad.html
     └── static/
         ├── css/
-        │   └── login.css
+        │└── login.css
+        ├── js/
         └── images/
             └── login_img.png
     開啟http://127.0.0.1:5000/login
