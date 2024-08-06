@@ -209,7 +209,8 @@ INSERT INTO `user_credential` (`hash_id`, `hash_user_id`, `hash_user_pwd`, `crea
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`admin_id`),
   ADD UNIQUE KEY `admin_id_UNIQUE` (`admin_id`),
-  ADD UNIQUE KEY `account_UNIQUE` (`account`);
+  ADD UNIQUE KEY `account_UNIQUE` (`account`),
+  MODIFY COLUMN `admin_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `admin_credential`
@@ -217,7 +218,8 @@ ALTER TABLE `admin`
 ALTER TABLE `admin_credential`
   ADD PRIMARY KEY (`hash_id`),
   ADD UNIQUE KEY `hash_id_UNIQUE` (`hash_id`),
-  ADD UNIQUE KEY `hash_admin_id_UNIQUE` (`hash_admin_id`);
+  ADD UNIQUE KEY `hash_admin_id_UNIQUE` (`hash_admin_id`),
+  MODIFY COLUMN `hash_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `character`
@@ -225,7 +227,8 @@ ALTER TABLE `admin_credential`
 ALTER TABLE `character`
   ADD PRIMARY KEY (`character_id`),
   ADD UNIQUE KEY `character_id_UNIQUE` (`character_id`),
-  ADD UNIQUE KEY `character_UNIQUE` (`character`);
+  ADD UNIQUE KEY `character_UNIQUE` (`character`),
+  MODIFY COLUMN `character_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `character_record`
@@ -234,14 +237,16 @@ ALTER TABLE `character_record`
   ADD PRIMARY KEY (`record_id`,`user_id`,`character_id`),
   ADD UNIQUE KEY `record_id_UNIQUE` (`record_id`),
   ADD KEY `user_character_record_idx` (`user_id`),
-  ADD KEY `char_char_record_fk_idx` (`character_id`);
+  ADD KEY `char_char_record_fk_idx` (`character_id`),
+  MODIFY COLUMN `record_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `course`
 --
 ALTER TABLE `course`
   ADD PRIMARY KEY (`course_id`),
-  ADD UNIQUE KEY `course_id_UNIQUE` (`course_id`);
+  ADD UNIQUE KEY `course_id_UNIQUE` (`course_id`),
+  MODIFY COLUMN `course_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `course_change`
@@ -249,7 +254,8 @@ ALTER TABLE `course`
 ALTER TABLE `course_change`
   ADD PRIMARY KEY (`changelog_id`,`course_id`,`change_by`),
   ADD KEY `course_course_change_fk_idx` (`course_id`),
-  ADD KEY `admin_course_change_fk_idx` (`change_by`);
+  ADD KEY `admin_course_change_fk_idx` (`change_by`),
+  MODIFY COLUMN `changelog_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `course_character_relation`
@@ -258,7 +264,8 @@ ALTER TABLE `course_character_relation`
   ADD PRIMARY KEY (`course_character_id`),
   ADD UNIQUE KEY `course_character_id_UNIQUE` (`course_character_id`),
   ADD KEY `course_course_char_relation_fk_idx` (`course_id`),
-  ADD KEY `char_course_char_relation_fk_idx` (`character_id`);
+  ADD KEY `char_course_char_relation_fk_idx` (`character_id`),
+  MODIFY COLUMN `course_character_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `external_account_binding`
@@ -266,7 +273,8 @@ ALTER TABLE `course_character_relation`
 ALTER TABLE `external_account_binding`
   ADD PRIMARY KEY (`binding_id`,`binding_user_id`),
   ADD UNIQUE KEY `binding_id_UNIQUE` (`binding_id`),
-  ADD KEY `user_acc_binding_fk` (`binding_user_id`);
+  ADD KEY `user_acc_binding_fk` (`binding_user_id`),
+  MODIFY COLUMN `binding_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `study_record`
@@ -275,7 +283,8 @@ ALTER TABLE `study_record`
   ADD PRIMARY KEY (`record_id`,`user_id`,`course_id`),
   ADD UNIQUE KEY `record_id_UNIQUE` (`record_id`),
   ADD KEY `user_study_record_fk_idx` (`user_id`),
-  ADD KEY `course_study_record_idx` (`course_id`);
+  ADD KEY `course_study_record_idx` (`course_id`),
+  MODIFY COLUMN `record_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `user`
@@ -283,7 +292,8 @@ ALTER TABLE `study_record`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  ADD UNIQUE KEY `account_UNIQUE` (`account`);
+  ADD UNIQUE KEY `account_UNIQUE` (`account`),
+  MODIFY COLUMN `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 資料表索引 `user_credential`
@@ -291,7 +301,8 @@ ALTER TABLE `user`
 ALTER TABLE `user_credential`
   ADD PRIMARY KEY (`hash_id`),
   ADD UNIQUE KEY `hash_id_UNIQUE` (`hash_id`),
-  ADD UNIQUE KEY `hash_user_id_UNIQUE` (`hash_user_id`);
+  ADD UNIQUE KEY `hash_user_id_UNIQUE` (`hash_user_id`),
+  MODIFY COLUMN `hash_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 已傾印資料表的限制式
