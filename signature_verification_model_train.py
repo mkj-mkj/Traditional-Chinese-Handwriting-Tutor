@@ -1,3 +1,4 @@
+import os
 import cv2
 import numpy as np
 import pandas as pd
@@ -8,6 +9,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import accuracy_score
 import joblib
+
 
 # 影像前處理函數
 def preprocess_image(image_path):
@@ -62,6 +64,24 @@ def prepare_dataset(image_paths, labels):
         features.append(extract_features(processed_image))
     return np.array(features), np.array(labels)
 
+def save_data(features, labels):
+    data_path = './signature_data.npz'
+    if os.path.exists(data_path):
+        # 如果已有資料，載入並合併
+        data = np.load(data_path)
+        X_old = data['features']
+        y_old = data['labels']
+        X_combined = np.vstack((X_old, features))
+        y_combined = np.hstack((y_old, labels))
+    else:
+        # 否則，直接保存
+        X_combined = features
+        y_combined = labels
+        print(features)
+        print(labels)
+    
+    np.savez(data_path, features=X_combined, labels=y_combined)
+
 # 訓練PNN模型並使用網格搜尋調整參數
 def train_pnn(features, labels):
     # 將資料分為訓練集 (80%)和測試集 (20%)
@@ -82,6 +102,9 @@ def train_pnn(features, labels):
     cv_splits = min(5, min_samples_per_class)
     grid_search = GridSearchCV(pnn, param_grid, cv=cv_splits)
     grid_search.fit(X_train, y_train)
+
+    # 保存新資料
+    save_data(X_train, y_train)
 
     # 獲取最佳參數
     best_params = grid_search.best_params_
@@ -117,24 +140,23 @@ def signature_verification_train(img_path, label):
 
 
 
-'''
-# 讀取CSV文件
-data = pd.read_csv("./signature_data.csv")
 
-# 打亂資料
-data = data.sample(frac=1).reset_index(drop=True)
+# # 讀取CSV文件
+# data = pd.read_csv("./signature_data.csv")
 
-# print(np.size(image_paths))
-# print(np.size(labels))
-print(np.bincount(data['name']))
+# # 打亂資料
+# data = data.sample(frac=1).reset_index(drop=True)
 
-# 準備資料集
-features, labels = prepare_dataset(data['img_path'], data['name'])
-# 訓練PNN模型並調整參數
-pnn = train_pnn(features, labels)
+# # print(np.size(image_paths))
+# # print(np.size(labels))
+# print(np.bincount(data['name']))
 
-# 測試PNN模型
-test_image_path = "test_signature.jpg"  # \測試影像的路徑
-prediction = test_pnn(pnn, test_image_path)
-print(f"Predicted label: {prediction[0]}")
-'''
+# # 準備資料集
+# features, labels = prepare_dataset(data['img_path'], data['name'])
+# # 訓練PNN模型並調整參數
+# pnn = train_pnn(features, labels)
+
+# # 測試PNN模型
+# test_image_path = "test_signature.jpg"  # \測試影像的路徑
+# prediction = test_pnn(pnn, test_image_path)
+# print(f"Predicted label: {prediction[0]}")
