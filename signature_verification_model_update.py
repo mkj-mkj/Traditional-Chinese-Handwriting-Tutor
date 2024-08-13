@@ -8,6 +8,18 @@ from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import accuracy_score
 import joblib
+import os
+
+#取得模型路徑
+def get_model_path():
+    current_directory = os.path.dirname(os.getcwd())
+    model_path = os.path.join(current_directory, 'signature_verification.pkl')
+    return model_path
+    
+def get_data_path():
+    current_directory = os.path.dirname(os.getcwd())
+    data_path = os.path.join(current_directory, 'signature_data.npz')
+    return data_path
 
 # 影像前處理函數
 def preprocess_image(image_path):
@@ -63,8 +75,50 @@ def prepare_dataset(image_paths, labels):
         features.append(extract_features(processed_image))
     return np.array(features), np.array(labels)
 
+def save_data(features, labels):
+    data_path = get_data_path()
+    data_path = './signature_data.npz'
+    if os.path.exists(data_path):
+        # 如果已有資料，載入並合併
+        data = np.load(data_path)
+        X_old = data['features']
+        y_old = data['labels']
+        # print(X_old)
+        # print(y_old)
+        X_combined = np.vstack((X_old, features))
+        y_combined = np.hstack((y_old, labels))
+        # print(X_combined)
+        # print(y_combined)
+    else:
+        # 否則，直接保存
+        X_combined = features
+        y_combined = labels
+    
+    np.savez(data_path, features=X_combined, labels=y_combined)
+
+def load_all_data():
+    data_path = './signature_data.npz'
+    if os.path.exists(data_path):
+        data = np.load(data_path)
+        return data['features'], data['labels']
+    else:
+        return None, None
+
 # 增量更新函數
 def add_samples_to_model(pnn, X_new, y_new, classes, best_params):
+
+    # 保存新資料
+    save_data(X_new, y_new)
+    
+    # 載入所有資料並訓練
+    X_all, y_all = load_all_data()
+    print(X_all)
+    print(y_all)
+
+    # 確保資料的長度一致
+    if X_all.shape[0] != y_all.shape[0]:
+        raise ValueError(f"樣本數量不一致：特徵數量 {X_all.shape[0]} 和標籤數量 {y_all.shape[0]} 不一致。")
+
     # 使用最佳參數初始化模型
     mlp = MLPClassifier(max_iter=500,
                         hidden_layer_sizes=best_params['mlpclassifier__hidden_layer_sizes'],
@@ -78,20 +132,35 @@ def add_samples_to_model(pnn, X_new, y_new, classes, best_params):
             scaler = step[1]
         if isinstance(step[1], MLPClassifier):
             mlp = step[1]
-
+    # print(y_all)
+    # print(classes)
     # 使用新的資料進行部分擬和
-    X_new_scaled = scaler.transform(X_new)
-    mlp.partial_fit(X_new_scaled, y_new, classes=classes)
+    X_all_scaled = scaler.transform(X_all)
+    mlp.fit(X_all_scaled, y_all)
 
-    # 重新构建管道
+    # 重新建構管道
     new_pnn = make_pipeline(scaler, mlp)
-    joblib.dump(new_pnn, 'signature_verification.pkl')
+    model_path = get_model_path()
+    joblib.dump(new_pnn, './signature_verification.pkl')
+    print(new_pnn.classes_)
     print("Model updated and saved as signature_verification.pkl")
 
 # 更新模型(新增的簽名檔路徑、user_id)，兩個輸入都要是陣列(size要一樣大) 例如：update_model(['test_signature.jpg'], [6])、update_model(['test_1.jpg', 'test_2.jpg'], [6, 5])
 def update_model(img_path, label):
-    pnn = joblib.load('signature_verification.pkl')
+    model_path = get_model_path()
+    # pnn = joblib.load(model_path)
+    pnn = joblib.load('./signature_verification.pkl')
     features, labels = prepare_dataset(img_path, label)
-    add_samples_to_model(pnn, features, labels, classes=pnn.classes_, best_params=pnn.get_params())
+    existing_classes = list(pnn.classes_)
+    new_classes = np.unique(np.concatenate((existing_classes, label)))
+    add_samples_to_model(pnn, features, labels, classes=new_classes, best_params=pnn.get_params())
 
-#update_model(['test_signature.jpg'], [6])
+
+
+# # 讀取CSV文件
+# data = pd.read_csv("./signature_data.csv")
+
+# # 打亂資料
+# data = data.sample(frac=1).reset_index(drop=True)
+
+# update_model(['test1.jpg','test2.jpg'], [10,10])
