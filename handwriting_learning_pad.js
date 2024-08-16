@@ -9,8 +9,8 @@ const fileInput = document.getElementById("file")
 const saveBtn = document.getElementById("save-btn")
 const predictionParagraph = document.getElementById('prediction');
 
-const CANVAS_WIDTH = window.innerWidth * 0.6;
-const CANVAS_HEIGHT = window.innerHeight * 0.5;
+const CANVAS_WIDTH = 400;
+const CANVAS_HEIGHT = 400;
 
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
@@ -35,6 +35,32 @@ function onMove(event) {
     }
     ctx.beginPath();
     ctx.moveTo(x, y);
+}
+
+function drawGrid() {
+    const gridSize = Math.min(CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(255, 0, 0, 0.2)"; // 淺紅色
+    ctx.lineWidth = 1;
+
+    // 繪製兩條垂直線
+    ctx.moveTo(gridSize / 2, 0);
+    ctx.lineTo(gridSize / 2, gridSize);
+    ctx.moveTo(gridSize * 1 / 2, 0);
+    ctx.lineTo(gridSize * 1 / 2, gridSize);
+
+    // 繪製兩條水平線
+    ctx.moveTo(0, gridSize / 2);
+    ctx.lineTo(gridSize, gridSize / 2);
+    ctx.moveTo(0, gridSize * 1 / 2);
+    ctx.lineTo(gridSize, gridSize * 1 / 2);
+
+    ctx.stroke();
+    ctx.closePath();
+
+    // 重置線條樣式
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
 }
 
 function startPainting() {
