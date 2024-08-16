@@ -146,25 +146,27 @@ function initCanvas() {
     drawGrid(); // 在畫布上繪製輔助線
 }
 
-function uploadImage() {
-    canvas.toBlob((blob) => {
-        const formData = new FormData();
-        formData.append('image', blob, 'handwriting.png');
+// 新增的腳本來處理API請求
+function getStrokeOrder() {
+const character = document.getElementById('character-input').value;
+    if (!character) {
+        alert('請輸入一個漢字');
+        return;
+    }
+    // 將漢字轉換為 Unicode 編碼
+    const unicodeCode = character.charCodeAt(0).toString(16).toUpperCase(); // 轉換為十六進制
+    const encodedCode = unicodeCode.padStart(4, '0'); // 確保有 4 位數字
 
-        fetch('http://127.0.0.1:5000/predict', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            predictionParagraph.textContent = 'Predicted Character: ' + data['Predicted Character'];
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            predictionParagraph.textContent = 'Error: ' + error;
-        });
-    }, 'image/png');
+    // 使用轉換後的編碼創建 PlayerShare 實例
+    try {
+        console.log('Creating PlayerShare instance...');
+        var playerShare = new PlayerShare('https://stroke-order.learningweb.moe.edu.tw/', encodedCode, '0', 'zh_TW');
+        console.log('PlayerShare instance created.');
+        playerShare.load();
+        console.log('PlayerShare load method called.');
+    } catch (error) {
+        console.error('Error initializing PlayerShare:', error);
+    }
 }
 
 document.getElementById('backButton');
@@ -177,6 +179,7 @@ backButton.addEventListener('click', function() {
 document.addEventListener('DOMContentLoaded', function() {
     initCanvas();
 });
+document.getElementById('submit-button').addEventListener('click', getStrokeOrder);
 document.getElementById('upload').addEventListener('click', uploadImage);
 
 canvas.addEventListener("mousemove", onMove);

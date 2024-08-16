@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>HandwritingPad</title>
-  <link rel="stylesheet" href="handwriting_learning_pad.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/handwriting_learning_pad.css') }}">
+  <script src="https://stroke-order.learningweb.moe.edu.tw/js/playerShare.js"></script>
   <style>
     canvas {
       background-color: white;
@@ -18,12 +19,15 @@
       font-size: 18px;
       padding: 5px 10px;
     }
-    #animation-container {
+    #stroke_player {
       margin-top: 20px;
-      width: 343px;
+      width: 348px;
       height: 470px;
       border: 1px solid #ccc;
+      margin-right: 20px;
+      align-items: left; 
     }
+    
   </style>
 </head>
 <body>
@@ -32,9 +36,12 @@
 </nav>
 <input type="text" id="character-input" maxlength="1" placeholder="輸入一個漢字">
 <button id="submit-button">顯示筆順</button>
+<div id="stroke_player" style="width:348px; height:470px;"></div>
 <div class="container">
   <div class="canvas-container">
-    <div id="animation-container"></div>
+    <!--<div id="animation-container"></div>-->
+    
+    
     <canvas id="canvas"></canvas>
     <div class="btns">
       <input id="line-width" type="range" min="1" max="10" value="5" step="0.1">
@@ -51,38 +58,6 @@
 <div class="func-btns">
   <button id="backButton" onclick="goBack()">Back</button>
 </div>
-<p id="prediction"></p>
-<script src="handwriting_learning_pad.js"></script>
-<script>
-  // 新增的腳本來處理API請求
-  document.getElementById('submit-button').addEventListener('click', getStrokeOrder);
-  function getStrokeOrder() {
-    const character = document.getElementById('character-input').value;
-    if (!character) {
-      alert('請輸入一個漢字');
-      return;
-    }
-    fetch(`http://127.0.0.1:5000/get-sourcecode?character=${encodeURIComponent(character)}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
-    })
-    .then(data => {
-      const container = document.getElementById('animation-container');
-      container.innerHTML = data;              
-      // 執行插入的JavaScript代碼
-      const scripts = container.getElementsByTagName('script');
-      for (let script of scripts) {
-        eval(script.innerHTML);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('獲取筆順動畫時出錯: ' + error.message);
-    });
-  }
-</script>
+<script src="{{ url_for('static', filename='js/handwriting_learning_pad.js') }}"></script>
 </body>
 </html>
