@@ -1,90 +1,88 @@
 <!DOCTYPE html>
-<!--<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Handwriting Recognition</title>
-    <link rel="stylesheet" href="./index.css"/>
-  </head>
-  <body>
-    <div style="margin-bottom: 10px">
-      <button id="delete" type="button">Delete</button>
-      <button id="finish" type="button">Finish</button>
-      <input type="text" id="recognized" style="width: 340px; font-size: 18px"></input>
-    </div>
-    <div id="app"></div>
-    <script src="../dist/react-handwriting-recognition.js"></script>
-    <script>
-      (function() {
-        var inputControls;
-        var input = document.getElementById('recognized');
-        var deleteButton = document.getElementById('delete');
-        var finishButton = document.getElementById('finish');
-
-        function clearHandwritingInput(e) {
-          e.preventDefault();
-          inputControls.clear();
-        }
-
-        HandwritingRecognition.input({
-          node: document.getElementById('app'),
-          applicationKey: 'b9e2b349-949f-4808-8005-df43efef8de5',
-          hmacKey: '6446fc31-9114-4667-85f0-5e977224117f',
-          protocol: 'WebSocket',
-          onChange: function(data, label) {
-            input.value = label;
-          },
-          onInit: function(controls) {
-            inputControls = controls;
-            deleteButton.addEventListener('click', clearHandwritingInput);
-            finishButton.addEventListener('click', function() {
-              var canvas = document.querySelector('#app canvas'); // Adjust the selector as needed
-              if (canvas) {
-                var image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-                var link = document.createElement('a');
-                link.download = 'handwriting.png';
-                link.href = image;
-                link.click();
-              }
-            });
-          },
-          onShutdown: function(controls) {
-            deleteButton.removeEventListener('click', clearHandwritingInput);
-          }
-        });
-
-      })();
-    </script>
-  </body>
-</html>-->
-
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Chinese Character Practice</title>
-  <link rel="stylesheet" href="handwriting_learning_pd.css" />
+  <title>HandwritingPad</title>
+  <link rel="stylesheet" href="handwriting_learning_pad.css" />
   <style>
     canvas {
       background-color: white;
       border: 1px solid black;
     }
+    #character-input {
+      font-size: 18px;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    #submit-button {
+      font-size: 18px;
+      padding: 5px 10px;
+    }
+    #animation-container {
+      margin-top: 20px;
+      width: 343px;
+      height: 470px;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
-<canvas id="canvas" ></canvas>
-<div class="btns">
-  <input id="line-width" type="range" min="1" max="10" value="5" step="0.1" />
-  <input id="color" type="color" />
-  <button id="destroy-btn">Clear</button>
-  <button id="eraser-btn">Erase</button>
-  <label for="file">
-    Add Photo
-    <input type="file" accept="image/*" id="file" />
-  </label>
-  <button id="save-btn">Save</button>
-  <button id="upload">Upload</button>
+<nav class="navbar">
+    <div class="logo">SignaTure</div>
+</nav>
+<input type="text" id="character-input" maxlength="1" placeholder="輸入一個漢字">
+<button id="submit-button">顯示筆順</button>
+<div class="container">
+  <div class="canvas-container">
+    <div id="animation-container"></div>
+    <canvas id="canvas"></canvas>
+    <div class="btns">
+      <input id="line-width" type="range" min="1" max="10" value="5" step="0.1">
+      <input id="color" type="color">
+      <button id="destroy-btn">Clear</button>
+      <button id="eraser-btn">Erase</button>
+      <label for="file">Add Photo <input type="file" accept="image/*" id="file"></label>
+      <button id="save-btn">Save</button>
+      <button id="upload">Upload</button>
+      <p id="prediction"></p>
+    </div>
+  </div>
+</div>
+<div class="func-btns">
+  <button id="backButton" onclick="goBack()">Back</button>
 </div>
 <p id="prediction"></p>
 <script src="handwriting_learning_pad.js"></script>
+<script>
+  // 新增的腳本來處理API請求
+  document.getElementById('submit-button').addEventListener('click', getStrokeOrder);
+  function getStrokeOrder() {
+    const character = document.getElementById('character-input').value;
+    if (!character) {
+      alert('請輸入一個漢字');
+      return;
+    }
+    fetch(`http://127.0.0.1:5000/get-sourcecode?character=${encodeURIComponent(character)}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(data => {
+      const container = document.getElementById('animation-container');
+      container.innerHTML = data;              
+      // 執行插入的JavaScript代碼
+      const scripts = container.getElementsByTagName('script');
+      for (let script of scripts) {
+        eval(script.innerHTML);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('獲取筆順動畫時出錯: ' + error.message);
+    });
+  }
+</script>
 </body>
 </html>
