@@ -4,16 +4,9 @@
 
 #設置後端
     在 XAMPP 安裝目錄下找到 htdocs 文件夾（通常在 C:\xampp\htdocs）。
-    在 htdocs 文件夾內放入handwriting資料夾
-    在cmd輸入以下兩個指令
-      cd C:\xampp\htdocs\handwriting
-      python classifier_invocation.py
-    接著訪問http://localhost/handwriting/index.html
-    http://localhost/signature_verification/sign_pad.html
+    在 htdocs 文件夾內放入final project資料夾
 
-
-#login等功能測試
-    確保目錄正確
+#確保目錄正確
     your_project_folder/
     │
     ├── app.py
@@ -28,4 +21,11 @@
         ├── js/
         └── images/
             └── login_img.png
-    開啟http://127.0.0.1:5000/login
+
+#測試
+    執行app.py
+    接著開啟http://127.0.0.1:5000/(route)即可測試
+
+    *手寫評分的route名稱為learning_pad
+    (http://127.0.0.1:5000/learning_pad)
+    其他的應該都跟HTML檔名一致
