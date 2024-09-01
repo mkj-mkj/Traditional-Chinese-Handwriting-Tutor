@@ -36,7 +36,7 @@ function onMove(event) {
     ctx.beginPath();
     ctx.moveTo(x, y);
 }
-
+/*
 function drawGrid() {
     const gridSize = Math.min(CANVAS_WIDTH, CANVAS_HEIGHT);
     ctx.beginPath();
@@ -62,6 +62,7 @@ function drawGrid() {
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
 }
+*/
 
 function startPainting() {
     isPainting = true;
@@ -143,7 +144,41 @@ function initCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'white'; // 填充背景色
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    drawGrid(); // 在畫布上繪製輔助線
+    //drawGrid(); // 在畫布上繪製輔助線
+}
+function evaluation(){
+    canvas.toBlob((blob) => {
+        console.log(blob);
+        const formData = new FormData();
+        formData.append('image', blob, 'handwriting.png');
+
+        // 確認 FormData 內容
+        for (let pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]);
+        }
+
+        fetch('http://127.0.0.1:5000/evaluation/evaluation', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+
+            if (data.error) {
+                // 當回應包含錯誤訊息時顯示錯誤
+                predictionParagraph.textContent = '錯誤: ' + data.error;
+            } else {
+                // 顯示相似度得分，格式化到小數點後兩位
+                const formattedScore = data.similarity_score.toFixed(2);
+                predictionParagraph.textContent = '相似度得分: ' + formattedScore;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            predictionParagraph.textContent = 'Error: ' + error;
+        });
+    }, 'image/png');
 }
 
 // 新增的腳本來處理API請求
@@ -180,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCanvas();
 });
 document.getElementById('submit-button').addEventListener('click', getStrokeOrder);
-document.getElementById('upload').addEventListener('click', uploadImage);
+document.getElementById('upload').addEventListener('click', evaluation);
 
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
