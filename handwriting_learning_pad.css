@@ -1,4 +1,4 @@
-\@import "reset.css";
+@import "reset.css";
 
 body {
     display: flex;
@@ -7,23 +7,26 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
-    background-color: rgba(228, 233, 236, 0.912);
+    background-color: rgba(228, 233, 236, 0.912) !important; 
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-
-.navbar {
-    width: 1200px;
-    color: black;
-    padding: px;
-    text-align: left;
-}
 
 .logo {
     padding: 20px;
     font-size: 24px;
     font-weight: bold;
     padding-left: 4%;
+}
+
+.all_canva {
+    height: 40vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 60px;
 }
 
 .container {
@@ -107,3 +110,29 @@ input#text {
 input#file {
     display: none;
 }
+
+.func-btns {
+    height:25vh;
+    margin-top: 10px;
+    width: 1200px; /* 使容器寬度與畫布相同 */
+    display: flex;
+    justify-content: flex-start; /* 使按鈕與畫布左對齊 */
+    padding-left: 8%; /* 確保與畫布左側對齊 */
+}
+
+#backButton {
+    height: 1.5vh;
+    width: 4vw;
+    border: 2px solid black;
+    background-color: transparent;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#backButton:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* 增加 hover 效果 */
+}
+
